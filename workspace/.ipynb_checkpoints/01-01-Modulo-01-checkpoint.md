@@ -165,7 +165,7 @@ Arquitectura de un procesador multi-procesador, multi-core y multi-threading.
 
 ## Sistema Operativo
 
-Tal como se mencionó al principio de este capítulo, una de las principales tareas de un Sistema Operativo es facilitar el uso del hardware a través de técnicas que permiten ocultar los detalles de su funcionamiento y enfocarse en su uso. Uno de estos componentes es el procesador, que, como se vió en la sección anterior, nació como un elemento simple que permitía la ejecución de un sólo contexto de ejecución y ahora es un componente sofisticado que permite ejecutar en forma simulánea varios contextos.
+Tal como se mencionó al principio de este capítulo, una de las principales tareas de un Sistema Operativo es facilitar el uso del hardware a través de técnicas que permiten ocultar los detalles de su funcionamiento y enfocarse en su uso. Uno de estos componentes es el procesador, que, como se vió en la sección anterior, nació como un elemento simple que permitía la ejecución de un sólo contexto de ejecución y ahora es un componente sofisticado que permite ejecutar en forma simultánea varios contextos.
 
 Para facilitar su uso, el sistema operativo asume que un procesador puede ejecutar sólo un contexto de ejecución. Este procesador es una abstracción del procesador real que se denomina {abbr}`LP (Logical Processor)`. Un **LP** está asociado siempre a un **HT**. Como un **HT** puede ejecutar sólo un contexto, por transitividad, un **LP** puede ejecutar sólo un contexto  de ejecución o thread. Este thread que se implementa en un **LP** dentro del Sistema Operativo, se llama {abbr}`KT (Kernel Thread)`. 
 
