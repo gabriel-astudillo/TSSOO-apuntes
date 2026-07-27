@@ -1,0 +1,71 @@
+{
+  "input": {
+    "files": [],
+    "opts": {
+      "execute": false,
+      "executeParallel": 1,
+      "pdf": false,
+      "tex": false,
+      "typst": false,
+      "docx": false,
+      "md": false,
+      "xml": false,
+      "meca": false,
+      "cff": false,
+      "site": false,
+      "html": false,
+      "all": true,
+      "doiBib": false,
+      "watch": false,
+      "force": false,
+      "checkLinks": false,
+      "strict": false,
+      "ci": false,
+      "maxSizeWebp": 1572864,
+      "keepHost": false
+    },
+    "performSiteBuild": true
+  },
+  "exports": [
+    {
+      "format": "pdf",
+      "output": "/home/devuser/workspace/_build/exports/myst.pdf",
+      "articles": [
+        {
+          "file": "/home/devuser/workspace/00-01-Organizacion.md",
+          "level": 1,
+          "slug": "organizacion",
+          "children": [
+            {
+              "file": "00-01-UA-01.md"
+            },
+            {
+              "file": "00-01-UA-02.md"
+            },
+            {
+              "file": "00-01-UA-03.md"
+            }
+          ]
+        },
+        {
+          "file": "/home/devuser/workspace/00-01-UA-01.md",
+          "level": 2,
+          "slug": "ua-01"
+        },
+        {
+          "file": "/home/devuser/workspace/00-01-UA-02.md",
+          "level": 2,
+          "slug": "ua-02"
+        },
+        {
+          "file": "/home/devuser/workspace/00-01-UA-03.md",
+          "level": 2,
+          "slug": "ua-03"
+        }
+      ],
+      "$file": "/home/devuser/workspace/myst.yml",
+      "$project": "/home/devuser/workspace"
+    }
+  ],
+  "buildSite": true
+}
