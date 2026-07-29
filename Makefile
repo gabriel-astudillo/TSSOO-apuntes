@@ -7,6 +7,9 @@ build:
 html:
 	HOST=0.0.0.0 myst build --keep-host --html 
 
+readthedocs:
+	myst init --readthedocs
+
 init:
 	HOST=0.0.0.0 myst init
 

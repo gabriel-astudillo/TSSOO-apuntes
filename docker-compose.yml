@@ -15,7 +15,8 @@ services:
       - 3000:3000
       - 3100:3100
     volumes:
-      - ./workspace:/home/devuser/workspace
+      #- ./workspace:/home/devuser/workspace
+      - ./:/home/devuser/
     networks:
       - back_net
 
