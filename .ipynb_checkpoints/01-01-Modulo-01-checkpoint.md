@@ -85,7 +85,7 @@ Es un contexto de ejecución o secuencia de instrucciones que se ejecuta en un h
 
 :::{tip} Process Unit (PU)
 :class: simple
-Se define como Unidad de Procesamiento como la entidad de hardware que es capaz de ejecutar **HT**. Una máquina de Neumann original, sólo puede ejecutar un HT en un intervalo de tiempo. Sin embargo, PU actuales implementan máquinas de Neumann modificadas que pueden ejecutar más de HT al mismo tiempo.
+Se define como Unidad de Procesamiento como la entidad de hardware que es capaz de ejecutar **HT**. Una máquina de Neumann original, sólo puede ejecutar un HT en un intervalo de tiempo. Sin embargo, PU actuales implementan máquinas de Neumann modificadas que pueden ejecutar más de un HT al mismo tiempo.
 :::
 
 En las siguientes secciones se aborda el problema de ejecutar dos conjuntos de instrucciones (códigos).
@@ -129,7 +129,7 @@ Dos códigos en dos PU. Cada PU ejecuta en forma simulatánea ambos contextos. E
 
 #### Sistemas multi-procesador
 
-Se debe recordar que la forma de cómputo de Von Neumann es secuencial. Para permitir ejecutar varias instrucciones al mismo tiempo, se han desarrollado ciertas tecnologías de procesamiento en paralelo [@alshekh2025comparative]. Una de ellas, es disponer de varias CPU independientes que comparten el bus de datos y memoria, tal como se muestra en la {numref}`Figura %s <01-arq-sist-comp-muti-proc>`. Cada CPU es equivalente a una PU, puede procesar sólo una secuencia de código Hardware Thread.
+Se debe recordar que la forma de cómputo de Von Neumann es secuencial. Para permitir ejecutar varias instrucciones al mismo tiempo, se han desarrollado ciertas tecnologías de procesamiento en paralelo [@alshekh2025comparative]. Una de ellas, es disponer de varias CPU independientes que comparten el bus de datos y memoria, tal como se muestra en la {numref}`Figura %s <01-arq-sist-comp-muti-proc>`. Cada CPU es equivalente a una PU, puede procesar sólo una secuencia de código o Hardware Thread.
 
 
 ```{figure} images/01-arq-sist-comp-muti-proc.png
