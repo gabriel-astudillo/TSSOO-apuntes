@@ -124,6 +124,19 @@ Dos códigos en un PU. Una forma de aumentar el desempeño del sistema, por ejem
 Dos códigos en dos PU. Cada PU ejecuta en forma simulatánea ambos contextos. Este sistema de cómputo de llama sistema paralelo.
 ```
 
+### Modelo de memoria
+
+#### Organización básica
+
+#### Memoria principal y secundaria
+
+#### Jerarquía de memoria
+
+
+### Modelo de Entrada/Salida
+
+#### Movimiento de datos hacia el procesador
+
 
 ### Arquitecturas paralelas
 
