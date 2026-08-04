@@ -85,7 +85,7 @@ Es un contexto de ejecución o secuencia de instrucciones que se ejecuta en un h
 
 :::{tip} Process Unit (PU)
 :class: simple
-Se define como Unidad de Procesamiento como la entidad de hardware que es capaz de ejecutar **HT**. Una máquina de Neumann original, sólo puede ejecutar un HT en un intervalo de tiempo. Sin embargo, PU actualies implementan máquinas de Neumann modificadas que pueden ejecutar más de HT al mismo tiempo.
+Se define como Unidad de Procesamiento como la entidad de hardware que es capaz de ejecutar **HT**. Una máquina de Neumann original, sólo puede ejecutar un HT en un intervalo de tiempo. Sin embargo, PU actuales implementan máquinas de Neumann modificadas que pueden ejecutar más de HT al mismo tiempo.
 :::
 
 En las siguientes secciones se aborda el problema de ejecutar dos conjuntos de instrucciones (códigos).
