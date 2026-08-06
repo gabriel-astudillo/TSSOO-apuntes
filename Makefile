@@ -21,3 +21,6 @@ clean:
 
 toc:
 	myst init --write-toc
+
+purge:
+	kill -9 `lsof -i|grep *:3000| cut -d ' ' -f 2`

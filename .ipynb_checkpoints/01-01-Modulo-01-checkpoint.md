@@ -85,7 +85,7 @@ Es un contexto de ejecución o secuencia de instrucciones que se ejecuta en un h
 
 :::{tip} Process Unit (PU)
 :class: simple
-Se define como Unidad de Procesamiento como la entidad de hardware que es capaz de ejecutar **HT**. Una máquina de Neumann original, sólo puede ejecutar un HT en un intervalo de tiempo. Sin embargo, PU actuales implementan máquinas de Neumann modificadas que pueden ejecutar más de un HT al mismo tiempo.
+Se define como Unidad de Procesamiento como la entidad de hardware que es capaz de ejecutar **HT**. Una máquina de Neumann original, sólo puede ejecutar un HT en un intervalo de tiempo. Sin embargo, PU actuales implementan máquinas de Neumann modificadas que pueden ejecutar más de un HT al mismo tiempo. Esto se verá en detalle más adelante.
 :::
 
 En las siguientes secciones se aborda el problema de ejecutar dos conjuntos de instrucciones (códigos).
@@ -124,9 +124,50 @@ Dos códigos en un PU. Una forma de aumentar el desempeño del sistema, por ejem
 Dos códigos en dos PU. Cada PU ejecuta en forma simulatánea ambos contextos. Este sistema de cómputo de llama sistema paralelo.
 ```
 
+```{figure} images/ejecucion_comparativa.gif
+:label: ejecucion_comparativa
+:align: center
+:width: 80%
+
+Comparación del flujo de tiempo entre ejecución secuencial, concurrente y paralela.
+```
+
 ### Modelo de memoria
 
+#### Unidades de medición
+
+La capacidad de los sistemas de memoria siempre en Bytes. Para abreviar la escritura de grandés cantidad de Bytes, se utilizan los prefijos definidos en la norma `ISO/IEC 80000-13` los que se detallan en la {numref}`Tabla %s <prefijos-iso>`
+
+```{csv-table} Prefijos ISO para capacidad
+:header: "Símbolo", "Nombre", "Potencia de dos"
+:label: prefijos-iso
+
+"Ki", "kibi", $2^10$
+"Mi", "mebi", $2^20$
+"Gi", "gibi", $2^30$
+"Ti", "tebi", $2^40$
+"Pi", "pebi", $2^50$
+"Ei", "exbi", $2^60$
+"Zi", "zebi", $2^70$
+"Yi", "yobi", $2^80$
+```
+
 #### Organización básica
+
+Según el modelo Von Neumann, toda memoria consiste en un arreglo continuo de **Bytes**. Cada celda del arreglo se denomina **registro de memoria** y cada registro de memoria tiene asociado una **dirección de memoria** (ver {numref}`Figura %s <01-modelo-memoria-vn>`).
+
+```{figure} images/01-modelo-memoria-vn.jpg
+:label: 01-modelo-memoria-vn
+:width: 80%
+:align: center
+
+Modelo de memoria visto como un arreglo continuo de Bytes. a) En general, la memoria se divide en una sección que contiene las instrucciones y una zona donde se mantienen los datos utilizados por el código. b) Ejemplo concreto: la instrucción `add $t0, $t1, $t2` ocupa 4 Bytes de memoria y su dirección es `0x00401004`. En forma similar, el número entero `3890754` utiliza 4 Bytes y su dirección es `0x0040100C`. Es costrumbre anotar las direcciones de memoria en notación hexadecimal (prefijo `0x`).
+```
+
+El **espacio de direcciones** de un sistema de memoria es la cantidad total de registros  que dicho sistema puede tener. Este número depende de la cantidad de bits con que se codifique una dirección de memoria. Si una dirección de memoria tiene $n$ bits, entonces su espacio de direcciones es $2^n$: esto significa que el sistema tiene $2^n$ registros de memoria posibles. Por ejemplo, es espacio de direcciones de la memoria de la {numref}`Figura %sb <01-modelo-memoria-vn>` es $2^32$, debido a que sus direcciones de mememoria están codificadas con $32$ bits. 
+
+
+
 
 #### Memoria principal y secundaria
 
