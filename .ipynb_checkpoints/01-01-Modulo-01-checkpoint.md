@@ -132,6 +132,8 @@ Dos códigos en dos PU. Cada PU ejecuta en forma simulatánea ambos contextos. E
 Comparación del flujo de tiempo entre ejecución secuencial, concurrente y paralela.
 ```
 
+
+
 ### Modelo de memoria
 
 #### Unidades de medición
