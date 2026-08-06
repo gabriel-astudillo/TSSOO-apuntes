@@ -55,7 +55,7 @@ Para hacer frente a estas limitaciones y reducir el cuello de botella en el acce
 :width: 50%
 :align: center
 
-Esquema de CPU actual con distintos niveles de memoria cache: L1 (datos+instrucciones), MLC (Middle Level Cache) y LLC (Last Level Cache).
+Esquema de CPU actual con distintos niveles de memoria cache: L1 (datos+instrucciones), {abbr}`MLC (Middle Level Cache)` y {abbr}`LLC (Last Level Cache)`.
 ```
 
 ## Arquitectura de Neumann actual
@@ -76,7 +76,7 @@ Diagrama estructural de un sistema computacional actual y su relación con el mo
 
 ### Modelos de ejecución de código
 
-Una máquina de Neumann actual ({numref}`Figura %s <01-arq-sist-comp-actual>`), en un instante de tiempo ejecuta una instrucción de un programa. En ciencias de la computación, el término *máquina de Neumann*, que es un modelo de cómputo específico, se suele reemplazar por un término más genérico que es el de **Unidad de Procesamiento** (PU). Una PU ejecutará una **secuencia de instrucciones** en forma ordenada y secuencial. Esta secuencia de instrucciones es conocida como **Contexto de ejecución** o **thread**. En todo caso, una PU es una implementación de un modelo de cómputo, es decir, es hardware. Se debe tener en consideración que para que un thread se puede ejecutar en forma ordenada y secuencial, **DEBE** tener contador de programa (PC) que sea propio de él.
+Una máquina de Neumann actual ({numref}`Figura %s <01-arq-sist-comp-actual>`), en un instante de tiempo ejecuta una instrucción de un programa. En ciencias de la computación, el término *máquina de Neumann*, que es un modelo de cómputo específico, se suele reemplazar por un término más genérico que es el de **Unidad de Procesamiento** (PU). Una {abbr}`PU (Process Unit)` ejecutará una **secuencia de instrucciones** en forma ordenada y secuencial. Esta secuencia de instrucciones es conocida como **Contexto de ejecución** o **thread**. En todo caso, una PU es una implementación de un modelo de cómputo, es decir, es hardware. Se debe tener en consideración que para que un thread se puede ejecutar en forma ordenada y secuencial, **DEBE** tener un contador de programa ({abbr}`PC (Program Counter)`) que sea propio de él.
 
 :::{tip} Hardware Thread (HT)
 :class: simple
@@ -85,10 +85,10 @@ Es un contexto de ejecución o secuencia de instrucciones que se ejecuta en un h
 
 :::{tip} Process Unit (PU)
 :class: simple
-Se define como Unidad de Procesamiento como la entidad de hardware que es capaz de ejecutar **HT**. Una máquina de Neumann original, sólo puede ejecutar un HT en un intervalo de tiempo. Sin embargo, PU actuales implementan máquinas de Neumann modificadas que pueden ejecutar más de un HT al mismo tiempo. Esto se verá en detalle más adelante.
+Se define como Unidad de Procesamiento como una entidad de hardware que es capaz de ejecutar un {abbr}`HT (Hardware Thread)` en un intervalo de tiempo. Un ejemplo de {abbr}`PU (Process Unit)` es una máquina de Neumann original. Sin embargo, {abbr}`PU (Process Unit)` actuales implementan máquinas de Neumann modificadas que pueden ejecutar más de un {abbr}`HT (Hardware Thread)` al mismo tiempo. Esto se verá en detalle más adelante.
 :::
 
-En las siguientes secciones se aborda el problema de ejecutar dos conjuntos de instrucciones (códigos).
+En las siguientes secciones se aborda el problema de ejecutar dos conjuntos de instrucciones (códigos) bajo distintas configuraciones de {abbr}`PU (Process Unit)`.
 
 #### Ejecución secuencial
 
@@ -98,7 +98,7 @@ En las siguientes secciones se aborda el problema de ejecutar dos conjuntos de i
 :width: 90%
 :align: center
 
-Dos códigos en un PU. La forma más simple es ejecutarlos en forma estrictamente secuencial.
+Dos códigos en una {abbr}`PU (Process Unit)`. La forma más simple es ejecutarlos en forma estrictamente secuencial.
 ```
 
 
@@ -110,7 +110,7 @@ Dos códigos en un PU. La forma más simple es ejecutarlos en forma estrictament
 :width: 90%
 :align: center
 
-Dos códigos en un PU. Una forma de aumentar el desempeño del sistema, por ejemplo, disminuyendo los tiempos de espera, es ejecutarlos en forma concurrente. Asociado a este esquema de ejecución nace el concepto de *cambio de contexto*.
+Dos códigos en una {abbr}`PU (Process Unit)`. Una forma de aumentar el desempeño del sistema, por ejemplo, disminuyendo los tiempos de espera, es ejecutarlos en forma concurrente. Asociado a este esquema de ejecución nace el concepto de *cambio de contexto*.
 ```
 
 
@@ -121,15 +121,29 @@ Dos códigos en un PU. Una forma de aumentar el desempeño del sistema, por ejem
 :width: 90%
 :align: center
 
-Dos códigos en dos PU. Cada PU ejecuta en forma simulatánea ambos contextos. Este sistema de cómputo de llama sistema paralelo.
+Dos códigos en dos {abbr}`PU (Process Unit)`. Cada {abbr}`PU (Process Unit)` ejecuta en forma simultánea ambos contextos. Este sistema de cómputo de llama sistema paralelo.
 ```
 
-```{figure} images/ejecucion_comparativa.gif
+#### Resumen
+
+En términos actuales, si se tiene un sólo core, sólo es posible implementar modelos de ejecución secuencial o concurrente. Si se dispone de varios cores, se puede tener paralelismo siempre y cuando la cantidad de threads a ejecutar sea menor o igual que la cantidad de cores que se dispongan en el sistema de cómputo (ver {numref}`Figura %s <ejecucion_comparativa>`).
+
+```{figure} images/ejecucion_comparativa_4.gif
 :label: ejecucion_comparativa
 :align: center
 :width: 80%
 
-Comparación del flujo de tiempo entre ejecución secuencial, concurrente y paralela.
+Comparación de la dinámica de ejecución secuencial, concurrente y paralela.
+```
+
+La cantidad de threads a ejecutar, en los sistemas operativos de propósito general, en general siempre va a ser mayor que la cantidad de {abbr}`HT (Hardware Thread)`. En este caso, se tiene un modelo de ejecución híbrido, que se denomina `paralelo/concurrente`. En la {numref}`Figura %s <ejecucion_paralela_concurrente_1>` se muestra un ejemplo muy simple de un caso donde se tiene cuatro threads en un sistema que dispone de dos cores. Suponiendo que no hay desbalance de carga entre los cores, se puede asumir que cada core va a tener que ejecutar dos threads. Lo anterior es lo mismo que decir que el {abbr}`HT (Hardware Thread)` disponible debe ejecutar dos threads en forma concurrente.
+
+```{figure} images/ejecucion_paralela_concurrente_1.gif
+:name: ejecucion_paralela_concurrente_1
+:align: center
+:width: 85%
+
+Ejemplo de paralelismo concurrente: ejecución cuatro threads en dos cores. Debido a que la cantidad de threads a ejecutar es mayor que la cantidad de cores (o, lo que es lo mismo, es mayor que la cantidad de {abbr}`HT (Hardware Thread)` disponible), entonces el {abbr}`HT (Hardware Thread)` de cada core se va a multiplexar en el tiempo, originando concurrencia intra core.
 ```
 
 
@@ -207,11 +221,6 @@ En el año 2001, IBM, presentó su procesador Power4 que estaba compuesto por do
 
 Arquitectura de un procesador multi-core como el presentado por IBM en el año 2001.
 ```
-
-:::{tip} Process Unit (PU)
-:class: simple
-Se define como Unidad de Procesamiento como la entidad de hardware que es capaz de ejecutar uno o más **HT**.
-:::
 
 Desde un punto de vista simple, un core se puede considerar como una CPU, con una máquina de Von Neumann y cache L1 y MLC (ver {numref}`Figura %s <01-diag-cpu-core>`). En resumen, el procesador Power4 es un sistema con dos core o dos **PU**. En este ejemplo, cada **PU** ejecuta sólo un **HT**.
 
