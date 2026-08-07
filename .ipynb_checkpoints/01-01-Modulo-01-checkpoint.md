@@ -146,13 +146,11 @@ La cantidad de threads a ejecutar, en los sistemas operativos de propósito gene
 Ejemplo de paralelismo concurrente: ejecución cuatro threads en dos cores. Debido a que la cantidad de threads a ejecutar es mayor que la cantidad de cores (o, lo que es lo mismo, es mayor que la cantidad de {abbr}`HT (Hardware Thread)` disponible), entonces el {abbr}`HT (Hardware Thread)` de cada core se va a multiplexar en el tiempo, originando concurrencia intra core.
 ```
 
-
-
 ### Modelo de memoria
 
 #### Unidades de medición
 
-La capacidad de los sistemas de memoria siempre en Bytes. Para abreviar la escritura de grandés cantidad de Bytes, se utilizan los prefijos definidos en la norma `ISO/IEC 80000-13` los que se detallan en la {numref}`Tabla %s <prefijos-iso>`
+La capacidad de los sistemas de memoria siempre en Bytes. Para abreviar la escritura de grandes cantidad de Bytes, se utilizan los prefijos definidos en la norma `ISO/IEC 80000-13` los que se detallan en la {numref}`Tabla %s <prefijos-iso>`
 
 ```{csv-table} Prefijos ISO para capacidad
 :header: "Símbolo", "Nombre", "Potencia de dos"
