@@ -326,8 +326,6 @@ Tal como se mencionó al principio de este capítulo, una de las principales tar
 
 Para facilitar su uso, el sistema operativo asume que un procesador puede ejecutar sólo un contexto de ejecución. Este procesador es una abstracción del procesador real que se denomina {abbr}`LP (Logical Processor)`. Un **LP** está asociado siempre a un **HT**. Como un **HT** puede ejecutar sólo un contexto, por transitividad, un **LP** puede ejecutar sólo un contexto  de ejecución o thread. Este thread que se implementa en un **LP** dentro del Sistema Operativo, se llama {abbr}`KT (Kernel Thread)`. 
 
-Entonces, el modelo de procesamiento desde el punto de vista del Sistema Operativo se muestra en 
-
 Como ejemplo, considere el sistema de la {numref}`Figura %s <01-kernel-thread>`, que tiene dos PU (por ejemplo, dos cores) que tienen SMT habilitado y pueden ejecutar hasta dos HT. Entonces, el hardware tiene una oferta de procesamiento de cuatro HT. Desde el punto de vista de un sistema operativo, estos HT los representa como cuatro LP. Desde el punto de vista de ejecución, el sistema operativo tiene la capacidad de ejecutar cuatro KT en forma simultánea.
 
 ```{figure} images/01-kernel-thread.png
