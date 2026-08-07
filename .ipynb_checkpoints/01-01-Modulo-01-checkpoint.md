@@ -229,14 +229,14 @@ Costos de acceso a distintas memoria para un procesador Xeon.
 ### Modelo de Entrada/Salida
 
 ```{figure} images/comming_soon.gif
-:width: 100%
+:width: 50%
 :align: center
 ```
 
 #### Movimiento de datos hacia el procesador
 
 ```{figure} images/comming_soon.gif
-:width: 100%
+:width: 50%
 :align: center
 ```
 
