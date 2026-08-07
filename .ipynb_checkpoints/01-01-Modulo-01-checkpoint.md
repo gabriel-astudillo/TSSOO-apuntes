@@ -181,11 +181,49 @@ Modelo de memoria visto como un arreglo continuo de Bytes. a) En general, la mem
 El **espacio de direcciones** de un sistema de memoria es la cantidad total de registros  que dicho sistema puede tener. Este número depende de la cantidad de bits con que se codifique una dirección de memoria. Si una dirección de memoria tiene $n$ bits, entonces su espacio de direcciones es $2^n$: esto significa que el sistema tiene $2^n$ registros de memoria posibles. Por ejemplo, es espacio de direcciones de la memoria de la {numref}`Figura %sb <01-modelo-memoria-vn>` es $2^32$, debido a que sus direcciones de mememoria están codificadas con $32$ bits. 
 
 
-
-
 #### Memoria principal y secundaria
 
+Según el modelo de Von Neumann, un procesador sólo puede ejecutar instrucciones que están previamente cargadas en su memoria (ver {numref}`Figura %s <01-prog-almacenado-vn>`). Se debe recordar que actualemente, la memoria de Von Neumann es la memoria cache L1.
+
+```{figure} images/01-prog-almacenado-vn.jpg
+:label: 01-prog-almacenado-vn
+:width: 50%
+:align: center
+
+Para que se puede ejecutar, el código de un programa debe estar almacenado en la memoria de una máquina de Von Neumann.
+```
+
+En un sistema de cómputo actual, para que el código del programa que se quiere ejecutar esté en la caché L1, debe estar primero en la memoria principal o memoria {abbr}`RAM (Random Access Memory)`. Después sus instrucciones y datos deben ser copiados a los distintos niveles de memoria caché hasta llegar a la nivel L1 para poder ser procesadas.
+
+:::{tip} Proceso
+:class: simple
+Cuando un código que está en memoria se está ejecutando, se llama **Proceso**. También se puede definir un **Proceso** como un código o programa que se está ejecutando en el {abbr}`HT (Hardware Thread)` de la {abbr}`PU (Process Unit)` respectiva. Desde un punto de vista más amplio, un **Proceso** es un código residente en memoria principal (RAM) que se está ejecutando en un {abbr}`HT (Hardware Thread)`.
+:::
+
+Para mantener las instrucciones y datos de un programa en forma persistente, los sistemas deben disponer de una memoria que pueda mantener sus datos en forma permanente. Esta memoria se llama **Memoria secundaria** y actualmente está implementada en dispositivos como Cintas, Discos Duros, SSD, SSD M2, DVD, BR.
+
+
 #### Jerarquía de memoria
+
+La jerarquía de memoria es una organización estructurada en niveles de los distintos medios de almacenamiento de un sistema computacional. Esta estructura está diseñada para resolver la brecha de velocidad entre el procesador y la memoria principal (conocido como **Cuello de Botella de Von Neumann**). Las memorias más cercanas a la velocidad de la {abbr}`PU (Process Unit)` son las más pequeñas y más costosas de fabricar. Dentro de una CPU (esto es, dentro del chip), en orden desde la más pequña y rápida, está la caché L1, la memoria {abbr}`MLC (Mid-Level Cache)` y finalemente la {abbr}`LLC (Last-Level Cache)`. Fuera del chip, está la memoria {abbr}`RAM (Random Access Memory)`. Fuera del chip, pero persistente entre funcionamiento del sistema, está el almacenamiento secundario como los {abbr}`SSD (Solid State Disk)`, {abbr}`HDD (Hard Drive Disk)`. Esta estructura permite que el sistema funcione sin las restricciones propias de una máquina de Von Neumann (memoria L1 pequeña implica códigos pequeños) y crea la ilusión de que el sistema dispone de una memoria tan rápida como slosus registros más cercanos a la {abbr}`PU (Process Unit)` y, al mismo tiempo, tan masiva como su unidad de disco más grande.
+
+```{figure} images/01-jerarquia-memoria.jpg
+:label: 01-jerarquia-memoria
+:width: 100%
+:align: center
+
+Ejemplo de valores de capacidad y Ancho de Banda (velocidad de transporte de datos) para un procesador Intel Core i5 14600K. Este procesador tiene 14 cores.
+```
+
+La {numref}`Figura %s <01-jerarquia-memoria>` muestra cómo es la jerarquía de memoria para un procesador lanzado al mercado a finales del año 2023. En forma complementaria, la {numref}`Figura %s <01-jerarquia-memoria_sky>` detalla los costos asociados al acceso a las distintas memorias, en términos de la cantidad de ciclos de latencia.
+
+```{figure} images/01-jerarquia-memoria_sky.jpg
+:label: 01-jerarquia-memoria_sky
+:width: 100%
+:align: center
+
+Costos de acceso a distintas memoria para un procesador Xeon.
+```
 
 
 ### Modelo de Entrada/Salida
