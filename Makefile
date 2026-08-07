@@ -14,7 +14,7 @@ init:
 	HOST=0.0.0.0 myst init
 
 start:
-	HOST=0.0.0.0 myst start --keep-host
+	HOST=0.0.0.0 JUPYTER_BASE_URL="http://localhost:8888" JUPYTER_TOKEN=""  myst start --keep-host 
 
 clean:
 	myst clean --all
