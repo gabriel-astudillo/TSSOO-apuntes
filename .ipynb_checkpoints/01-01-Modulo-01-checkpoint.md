@@ -226,19 +226,76 @@ Costos de acceso a distintas memoria para un procesador Xeon.
 ```
 
 
-### Modelo de Entrada/Salida
+### Modelo de Input/Output
+
+#### Modelo de funcionamiento de un código en ejecución
+
+El sistema de {abbr}`I/O (Input/Output)` es el mecanismo que permite que el procesador su memoria con el Hardware del sistema computacional. Este HW abarca desde los elementos clásicos de un computador (pantalla, teclado, almacenamiento secundario) hasta elemento como cámaras, sensores de toda clase, interfaces de conexión a redes, etc. Una de las características de este sistema es que debe entregar herramientas para poder gestionar las distintas velocidades de transmisión de los elementos mencionados. Inicialmente, se debe recordar que todo código en ejecución, se puede modelar en forma de un sistema que tiene dos estados: uno que representa el uso de la {abbr}`PU (Process Unit)` y otro que representa el uso del sistema de {abbr}`I/O (Input/Output)` (ver {numref}`Figura %s <01-modelo-IO-1>`). Cuando alguna instrucción del código realiza una petición de I/O (por ejemplo, un GET hacia un sitio web), el sistema de I/O utiliza el HW respectivo para acceder a los datos solicitados. Una vez que los datos están listos, se realiza la transferencia de éstos a la PU, para que el programa pueda seguir su curso.
+
+```{figure} images/01-modelo-IO-1.jpg
+:label: 01-modelo-IO-1
+:width: 70%
+:align: center
+
+Modelo básico de funcionamiento de un código en ejecución. 
+```
+#### Modelo de transferencia de datos I/O $\leftrightarrow$ PU
+
+Se debe recordar que para que los datos se puedan utlizar por la {abbr}`PU (Process Unit)`, éstos deben estar en la memoria L1, la que puede almacenar una pequeña cantidad de datos y su velocidad de trabajo es mayor que todo el resto de las memorias (ver {numref}`Figura %s <01-jerarquia-memoria>`). Por otro lado, los datos adquiridos por el sistema de {abbr}`I/O (Input/Output)` son, en cantidad, mucho mayor que la capacidad de la memoria L1 y la velocidad a la que se adquieren es lenta. Debido a estas condiciones de borde, una solución que se implementa en los sistemas de cómputo es almacenar los datos adquiridos en un búfer localizado en la memoria {abbr}`RAM (Random Access Memory)`.
+
+```{figure} images/01-modelo-IO-2.jpg
+:label: 01-modelo-IO-2
+:width: 70%
+:align: center
+
+Modelo de transferencia de datos entre HW de {abbr}`I/O (Input/Output)` y memoria L1 de un {abbr}`PU (Process Unit)`.
+```
+
+La {numref}`Figura %s <01-modelo-IO-2>` muestra un modelo de transferencia de transferencia de datos que se basa en el modelo de ejecución de la {numref}`Figura %s <01-modelo-IO-1>`. Cuando los datos están listo en el dispositivo de {abbr}`I/O (Input/Output)`, son transferidos sin la intervención de la {abbr}`PU (Process Unit)`, a través del sistema [{abbr}`DMA (Direct Memory Access)`](https://en.wikipedia.org/wiki/Direct_memory_access).
+
+#### Arquitectura de hardware del Sistema de {abbr}`I/O (Input/Output)`
+
+La {numref}`Figura %s <01-modelo-IO-3>` muestra una arquitecura típica de una Sistema de {abbr}`I/O (Input/Output)`. El código que se está ejecutando en la {abbr}`PU (Process Unit)` solicita un dato externo. Esta solicitud se envía a una pieza de sofware especializada, llamada `Device driver`, la que se encarga de envíar las intrucciones de bajo nivel del `Device Controller` para que éste finalmente acceda al HW específico. Una vez que el `Device Controller` obtiene los datos, los envía vía {abbr}`DMA (Direct Memory Access)` a la memoria principal. Luego, el subsistema de memoria de la {abbr}`PU (Process Unit)` transfiere esos datos a las memorias cache y en particular a la L1 para que se puedan procesar por la máquina de Von Neumann. 
+
+En general, los dispositivos que se encargan de enviar y recibir datos {abbr}`I/O (Input/Output)`, pueden operar en dos modos: a) que consulten en forma periódica si debe enviar o recibir datos y b) que se activen bajo demanda o en forma asincrónica. Normalmente, la segunda forma es la preferida debido a que utiliza los recursos del sistema en forma eficiente, sobre todo si el sistema tiene muchos dispositivos de {abbr}`I/O (Input/Output)`. Para permitir que el código realice una solicitud de  {abbr}`I/O (Input/Output)` en forma asíncronica y que el sistema de transferencia de datos le avise a la {abbr}`PU (Process Unit)` que esos datos esta listos, se necesita un método de operación que se llama **{abbr}`I/O (Input/Output)` dirigido por interrupciones**.
+
+
+```{figure} images/01-modelo-IO-3.jpg
+:label: 01-modelo-IO-3
+:width: 70%
+:align: center
+
+Arquitectura de Hardware del sistema de {abbr}`I/O (Input/Output)`.
+```
+
+:::{tip} Device Driver
+:class: simple
+Es un módulo de código especializado dentro del sistema operativo diseñado para comunicarse directamente con el Device Controller. Su función es ocultar la complejidad y las particularidades del hardware para ofrecer una interfaz abstracta y estandarizada a las capas superiores del sistema operativo y a las aplicaciones de usuario. Traduce comandos genéricos del sistema operativo (como *Escribir un bloque de datos*) a las lecturas y escrituras de registros específicas que entiende el Device Controller.
+:::
+
+:::{tip} Device Controller
+:class: simple
+Es un componente de hardware (un chip, microcontrolador o tarjeta física) ubicado en la placa madre o integrado en el propio artefacto de {abbr}`I/O (Input/Output)`. Su función es traducir las señales del bus del computador (direcciones, datos, líneas de control) a comandos eléctricos y mecánicos específicos del dispositivo (por ejemplo, acceder a un dato específico de un disco ssd, encender un LED a través del puerto GPIO de una Raspberry o convertir un flujo de bits en un paquete de datos Wifi).
+:::
+
+#### Interrupciones
 
 ```{figure} images/comming_soon.gif
 :width: 50%
 :align: center
 ```
 
-#### Movimiento de datos hacia el procesador
 
-```{figure} images/comming_soon.gif
-:width: 50%
+#### Modelo general de {abbr}`I/O (Input/Output)` 
+
+```{figure} images/01-modelo-IO-4.jpg
+:label: 01-modelo-IO-4
+:width: 70%
 :align: center
+
+Modelo de transferencia de datos entre HW de {abbr}`I/O (Input/Output)` y memoria L1 de un {abbr}`PU (Process Unit)` a través del sistema de interrupciones.
 ```
+
 
 ### Arquitecturas paralelas
 
