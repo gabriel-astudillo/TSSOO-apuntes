@@ -48,7 +48,7 @@ El condición de borde que define a esta arquitectura en que tanto las instrucci
 
 Toda esta ejecución está guiada por una señal de reloj periódica. Aunque llevar a cabo una sola instrucción requiere una serie de pasos internos, las tecnologías de implementación en los procesadores modernos permiten solapar estas etapas para lograr, idealmente, la ejecución de una instrucción por cada ciclo de reloj. Sin embargo, a pesar del rápido e importante incremento en la velocidad de la CPU, el rendimiento general del sistema se ve limitado por las operaciones de entrada/salida y por la memoria, cuyos avances en velocidad han sido más lentos en comparación con la tecnología del procesador.
 
-Para hacer frente a estas limitaciones y reducir el cuello de botella en el acceso a la memoria, la arquitectura recurre al uso de memorias caché [@lanka2024review], las cuales mantienen los datos utilizados con mayor frecuencia en una memoria muy rápida y cercana al procesador (ver {numref}`Figura %s <01-cpu-cache>`). Asimismo, debido a que el paradigma tradicional de Von Neumann es de naturaleza secuencial, se han desarrollado tecnologías de procesamiento en paralelo que permiten ejecutar múltiples instrucciones de forma simultánea, buscando así superar las restricciones de velocidad inherentes al modelo [@alshekh2025comparative]. 
+Para hacer frente a estas limitaciones y reducir el cuello de botella en el acceso a la memoria [@marchesin2024beyond], la arquitectura recurre al uso de memorias caché [@lanka2024review], las cuales mantienen los datos utilizados con mayor frecuencia en una memoria muy rápida y cercana al procesador (ver {numref}`Figura %s <01-cpu-cache>`). Asimismo, debido a que el paradigma tradicional de Von Neumann es de naturaleza secuencial, se han desarrollado tecnologías de procesamiento en paralelo que permiten ejecutar múltiples instrucciones de forma simultánea, buscando así superar las restricciones de velocidad inherentes al modelo [@alshekh2025comparative]. 
 
 ```{figure} images/01-cpu-cache.png
 :label: 01-cpu-cache
@@ -62,7 +62,7 @@ Esquema de CPU actual con distintos niveles de memoria cache: L1 (datos+instrucc
 
 ### Descripción general
 
-Los computadores actuales están diseñados en base al modelo de Von Neumann del año 1945, pero en su diseño, toman en consideración, en primer lugar, el cuello de botella de acceso a memoria. Tal como se mencionó, este problema se mitiga con la implementación de un sistema jerárquico de memoria, donde las memorias más cercanas al procesador son más rápidas. Debido a esto, tienden a ser más costosa de fabricar y como consecuencia, son de menor tamaño. Esto último para mantener en un valor adecuado el costo de fabricación del procesador.
+Los computadores actuales están diseñados en base al modelo de Von Neumann del año 1945, pero en su diseño, toman en consideración, en primer lugar, el cuello de botella de acceso a memoria [@zou2021breaking]. Tal como se mencionó, este problema se mitiga con la implementación de un sistema jerárquico de memoria, donde las memorias más cercanas al procesador son más rápidas. Debido a esto, tienden a ser más costosa de fabricar y como consecuencia, son de menor tamaño. Esto último para mantener en un valor adecuado el costo de fabricación del procesador.
 
 Actualmente, los procesadores tienen tres niveles de memoria caché: L1, {abbr}`MLC (Middle Level Cache)` y {abbr}`LLC (Last Level Cache)`. Tal como se muestra en la {numref}`Figura %s <01-arq-sist-comp-actual>`, la diferencia principal entre los procesadores modernos con el modelo original de Von Neumann, radica en que el sistema de memoria ahora está implementado en la memoria caché L1. De hecho, en gran parte de los procesadores contemporáneos esta memoria está dividida en dos secciones: datos e intrucciones. La memoria principal del sistema pertenece al sistema de Entrada/Salida, por lo que su uso impacta en el desempeño del sistema, ya que es muy lenta comparada con la velocidad de funcionamiento de la máquina de Neumann.
 
@@ -79,12 +79,12 @@ Diagrama estructural de un sistema computacional actual y su relación con el mo
 Una máquina de Neumann actual ({numref}`Figura %s <01-arq-sist-comp-actual>`), en un instante de tiempo ejecuta una instrucción de un programa. En ciencias de la computación, el término *máquina de Neumann*, que es un modelo de cómputo específico, se suele reemplazar por un término más genérico que es el de **Unidad de Procesamiento** (PU). Una {abbr}`PU (Process Unit)` ejecutará una **secuencia de instrucciones** en forma ordenada y secuencial. Esta secuencia de instrucciones es conocida como **Contexto de ejecución** o **thread**. En todo caso, una PU es una implementación de un modelo de cómputo, es decir, es hardware. Se debe tener en consideración que para que un thread se puede ejecutar en forma ordenada y secuencial, **DEBE** tener un contador de programa ({abbr}`PC (Program Counter)`) que sea propio de él.
 
 :::{tip} Hardware Thread (HT)
-:class: simple
+:class: dropdown
 Es un contexto de ejecución o secuencia de instrucciones que se ejecuta en un hardware de cómputo, por ejemplo, una máquina de Neumann.
 :::
 
 :::{tip} Process Unit (PU)
-:class: simple
+:class: dropdown
 Se define como Unidad de Procesamiento como una entidad de hardware que es capaz de ejecutar un {abbr}`HT (Hardware Thread)` en un intervalo de tiempo. Un ejemplo de {abbr}`PU (Process Unit)` es una máquina de Neumann original. Sin embargo, {abbr}`PU (Process Unit)` actuales implementan máquinas de Neumann modificadas que pueden ejecutar más de un {abbr}`HT (Hardware Thread)` al mismo tiempo. Esto se verá en detalle más adelante.
 :::
 
@@ -146,6 +146,14 @@ La cantidad de threads a ejecutar, en los sistemas operativos de propósito gene
 Ejemplo de paralelismo concurrente: ejecución cuatro threads en dos cores. Debido a que la cantidad de threads a ejecutar es mayor que la cantidad de cores (o, lo que es lo mismo, es mayor que la cantidad de {abbr}`HT (Hardware Thread)` disponible), entonces el {abbr}`HT (Hardware Thread)` de cada core se va a multiplexar en el tiempo, originando concurrencia intra core.
 ```
 
+:::{important} Multi-programación y Multi-tarea
+En los casos que hay dos o más códigos en memoria principal (o sencillamente más de dos procesos), se dice que el sistema está **Multi-programado**. Cuando los procesos de un sistema Multi-programado se ejecutan multiplexando en el tiempo el uso de la {abbr}`PU (Process Unit)`, se dice que el sistema es **Multi-tarea**.
+:::
+
+:::{aside}
+**Sección 1.4.1**, *Silberschatz, A., Galvin, P. B., & Gagne, G. (2018). Operating System Concepts (10th ed., pp. 8–11). Wiley*.
+:::
+
 ### Modelo de memoria
 
 #### Unidades de medición
@@ -205,6 +213,10 @@ Para mantener las instrucciones y datos de un programa en forma persistente, los
 
 #### Jerarquía de memoria
 
+:::{aside}
+**Sección 1.2.2**, *Silberschatz, A., Galvin, P. B., & Gagne, G. (2018). Operating System Concepts (10th ed., pp. 8–11). Wiley*.
+:::
+
 La jerarquía de memoria es una organización estructurada en niveles de los distintos medios de almacenamiento de un sistema computacional. Esta estructura está diseñada para resolver la brecha de velocidad entre el procesador y la memoria principal (conocido como **Cuello de Botella de Von Neumann**). Las memorias más cercanas a la velocidad de la {abbr}`PU (Process Unit)` son las más pequeñas y más costosas de fabricar. Dentro de una CPU (esto es, dentro del chip), en orden desde la más pequña y rápida, está la caché L1, la memoria {abbr}`MLC (Mid-Level Cache)` y finalemente la {abbr}`LLC (Last-Level Cache)`. Fuera del chip, está la memoria {abbr}`RAM (Random Access Memory)`. Fuera del chip, pero persistente entre funcionamiento del sistema, está el almacenamiento secundario como los {abbr}`SSD (Solid State Disk)`, {abbr}`HDD (Hard Drive Disk)`. Esta estructura permite que el sistema funcione sin las restricciones propias de una máquina de Von Neumann (memoria L1 pequeña implica códigos pequeños) y crea la ilusión de que el sistema dispone de una memoria tan rápida como slosus registros más cercanos a la {abbr}`PU (Process Unit)` y, al mismo tiempo, tan masiva como su unidad de disco más grande.
 
 ```{figure} images/01-jerarquia-memoria.jpg
@@ -227,6 +239,10 @@ Costos de acceso a distintas memoria para un procesador Xeon.
 
 
 ### Modelo de Input/Output
+
+:::{aside}
+**Sección 1.2.3**, *Silberschatz, A., Galvin, P. B., & Gagne, G. (2018). Operating System Concepts (10th ed., pp. 8–11). Wiley*.
+:::
 
 #### Modelo de funcionamiento de un código en ejecución
 
@@ -281,7 +297,7 @@ Es un componente de hardware (un chip, microcontrolador o tarjeta física) ubica
 #### {abbr}`I/O (Input/Output)` y Sistema de interrupciones
 
 
-El acceso a los datos de un dispositivo de {abbr}`I/O (Input/Output)` se puede modelar en base al diagrama de la {numref}`Figura %s <01-modelo-IO-5>`. Cuando un código en ejecución llega a una instrucción que solicita {abbr}`I/O (Input/Output)` $\text{\textcircled{\small 1}}$, se genera una llamada a un código que se llama **Vector de Interrupciones** $\text{\textcircled{\small 2}}$. Esta llamada asíncrónica que es originada implícitamente por el código, se denomina **interrupción por software**. Esta llamada es procesada por el Vector de Interrupciones e invoca a la función $\text{\textcircled{\small 3}}$ que debe ejecutar el acceso a los datos $\text{\textcircled{\small 4}}$ a través del `Device driver` y `Device controller`. Una vez que los datos están en memoria RAM, se genera una **interrupción por hardware** que permite que el sistema de memoria de la {abbr}`PU (Process Unit)`.
+El acceso a los datos de un dispositivo de {abbr}`I/O (Input/Output)` se puede modelar en base al diagrama de la {numref}`Figura %s <01-modelo-IO-5>`. Cuando un código en ejecución llega a una instrucción que solicita {abbr}`I/O (Input/Output)` $\text{\textcircled{\small 1}}$, se genera una llamada a un código que se llama **Vector de Interrupciones** $\text{\textcircled{\small 2}}$. Esta llamada asíncrónica que es originada implícitamente por el código, se denomina **interrupción por software**. Esta llamada es procesada por el Vector de Interrupciones e invoca a la función $\text{\textcircled{\small 3}}$ que debe ejecutar el acceso a los datos $\text{\textcircled{\small 4}}$ a través del `Device driver` y `Device controller`. Una vez que los datos están en memoria RAM, se genera una **interrupción por hardware** que permite que el sistema de memoria de la {abbr}`PU (Process Unit)` [Sec. 1.2.1, @Silberschatz2018].
 
 :::{note} Interrupción
 :class: dropdown
@@ -299,7 +315,7 @@ El vector de interrupciones (o *tabla de vectores de interrupción*) es una list
 :width: 100%
 :align: center
 
-Mecanismo para usar {abbr}`I/O (Input/Output)` a través del sistema de interrupciones.
+Mecanismo para usar {abbr}`I/O (Input/Output)` a través del sistema de interrupciones. Basado en [Figure 1.4, p.10, @Silberschatz2018].
 ```
 
 
@@ -315,6 +331,10 @@ Modelo de transferencia de datos entre HW de {abbr}`I/O (Input/Output)` y memori
 
 
 ### Arquitecturas paralelas
+
+:::{aside}
+**Sección 1.3.2**, *Silberschatz, A., Galvin, P. B., & Gagne, G. (2018). Operating System Concepts (10th ed., pp. 8–11). Wiley*.
+:::
 
 #### Sistemas multi-procesador
 
