@@ -257,7 +257,7 @@ La {numref}`Figura %s <01-modelo-IO-2>` muestra un modelo de transferencia de tr
 
 La {numref}`Figura %s <01-modelo-IO-3>` muestra una arquitecura típica de una Sistema de {abbr}`I/O (Input/Output)`. El código que se está ejecutando en la {abbr}`PU (Process Unit)` solicita un dato externo. Esta solicitud se envía a una pieza de sofware especializada, llamada `Device driver`, la que se encarga de envíar las intrucciones de bajo nivel del `Device Controller` para que éste finalmente acceda al HW específico. Una vez que el `Device Controller` obtiene los datos, los envía vía {abbr}`DMA (Direct Memory Access)` a la memoria principal. Luego, el subsistema de memoria de la {abbr}`PU (Process Unit)` transfiere esos datos a las memorias cache y en particular a la L1 para que se puedan procesar por la máquina de Von Neumann. 
 
-En general, los dispositivos que se encargan de enviar y recibir datos {abbr}`I/O (Input/Output)`, pueden operar en dos modos: a) que consulten en forma periódica si debe enviar o recibir datos y b) que se activen bajo demanda o en forma asincrónica. Normalmente, la segunda forma es la preferida debido a que utiliza los recursos del sistema en forma eficiente, sobre todo si el sistema tiene muchos dispositivos de {abbr}`I/O (Input/Output)`. Para permitir que el código realice una solicitud de  {abbr}`I/O (Input/Output)` en forma asíncronica y que el sistema de transferencia de datos le avise a la {abbr}`PU (Process Unit)` que esos datos esta listos, se necesita un método de operación que se llama **{abbr}`I/O (Input/Output)` dirigido por interrupciones**.
+En general, los dispositivos que se encargan de enviar y recibir datos {abbr}`I/O (Input/Output)`, pueden operar en dos modos: a) que consulten en forma periódica si debe enviar o recibir datos y b) que se activen bajo demanda o en forma asincrónica. Normalmente, la segunda forma es la preferida debido a que utiliza los recursos del sistema en forma eficiente, sobre todo si el sistema tiene muchos dispositivos de {abbr}`I/O (Input/Output)`. Para permitir que el código realice una solicitud de  {abbr}`I/O (Input/Output)` en forma asíncronica y que el sistema de transferencia de datos le avise a la {abbr}`PU (Process Unit)` que esos datos están listos, se necesita un método de operación que se llama **{abbr}`I/O (Input/Output)` dirigido por interrupciones**.
 
 
 ```{figure} images/01-modelo-IO-3.jpg
@@ -269,20 +269,37 @@ Arquitectura de Hardware del sistema de {abbr}`I/O (Input/Output)`.
 ```
 
 :::{tip} Device Driver
-:class: simple
+:class: dropdown
 Es un módulo de código especializado dentro del sistema operativo diseñado para comunicarse directamente con el Device Controller. Su función es ocultar la complejidad y las particularidades del hardware para ofrecer una interfaz abstracta y estandarizada a las capas superiores del sistema operativo y a las aplicaciones de usuario. Traduce comandos genéricos del sistema operativo (como *Escribir un bloque de datos*) a las lecturas y escrituras de registros específicas que entiende el Device Controller.
 :::
 
 :::{tip} Device Controller
-:class: simple
+:class: dropdown
 Es un componente de hardware (un chip, microcontrolador o tarjeta física) ubicado en la placa madre o integrado en el propio artefacto de {abbr}`I/O (Input/Output)`. Su función es traducir las señales del bus del computador (direcciones, datos, líneas de control) a comandos eléctricos y mecánicos específicos del dispositivo (por ejemplo, acceder a un dato específico de un disco ssd, encender un LED a través del puerto GPIO de una Raspberry o convertir un flujo de bits en un paquete de datos Wifi).
 :::
 
-#### Interrupciones
+#### {abbr}`I/O (Input/Output)` y Sistema de interrupciones
 
-```{figure} images/comming_soon.gif
-:width: 50%
+
+El acceso a los datos de un dispositivo de {abbr}`I/O (Input/Output)` se puede modelar en base al diagrama de la {numref}`Figura %s <01-modelo-IO-5>`. Cuando un código en ejecución llega a una instrucción que solicita {abbr}`I/O (Input/Output)` $\text{\textcircled{\small 1}}$, se genera una llamada a un código que se llama **Vector de Interrupciones** $\text{\textcircled{\small 2}}$. Esta llamada asíncrónica que es originada implícitamente por el código, se denomina **interrupción por software**. Esta llamada es procesada por el Vector de Interrupciones e invoca a la función $\text{\textcircled{\small 3}}$ que debe ejecutar el acceso a los datos $\text{\textcircled{\small 4}}$ a través del `Device driver` y `Device controller`. Una vez que los datos están en memoria RAM, se genera una **interrupción por hardware** que permite que el sistema de memoria de la {abbr}`PU (Process Unit)`.
+
+:::{note} Interrupción
+:class: dropdown
+Una interrupción es una señal o evento que permite activar en forma asincrónica otra parte del sistema. Una interrupción puede ser por software o hardware, si el evento es generado por el código o en forma física, respectivamente.
+:::
+
+:::{note} Vector de interrupciones
+:class: dropdown
+El vector de interrupciones (o *tabla de vectores de interrupción*) es una lista o tabla guardada en la memoria RAM que contiene las direcciones de memoria donde se encuentran los programas (funciones) que atienden cada tipo de interrupción. Estas funciones se llaman [{abbr}`ISR (Interrupt Service Routine)`](https://en.wikipedia.org/wiki/Interrupt_handler).
+:::
+
+
+```{figure} images/01-modelo-IO-5.jpg 
+:label: 01-modelo-IO-5
+:width: 100%
 :align: center
+
+Mecanismo para usar {abbr}`I/O (Input/Output)` a través del sistema de interrupciones.
 ```
 
 
