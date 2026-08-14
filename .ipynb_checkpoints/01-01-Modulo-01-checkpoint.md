@@ -387,9 +387,7 @@ Por ejemplo, considere que un procesador con un sólo core pero que tiene SMT ha
 Ejemplo de Multi-threading. Procesador con SMT habilitado que permite la ejecución de dos Hardware Threads.
 ```
 
-
-
-#### Sistemas actuales
+### Sistemas de cómputo actuales
 
 Los sistemas computacionales actuales son en general multi-procesado, multi-core y multi-threading. Un sistema multi-procesador es un sistema que tiene varias pastillas o sockets. Cuando un procesador tiene varios cores, se habla de un sistema multi-core. Cuando cada core puede ejecutar dos o más Hardware Threads, se trata de un sisterma multi-threading.
 
@@ -414,11 +412,12 @@ Arquitectura de un procesador multi-procesador, multi-core y multi-threading.
 ```
 
 
-## Sistema Operativo
+%## Sistema Operativo
 
-Tal como se mencionó al principio de este capítulo, una de las principales tareas de un Sistema Operativo es facilitar el uso del hardware a través de técnicas que permiten ocultar los detalles de su funcionamiento y enfocarse en su uso. Uno de estos componentes es el procesador, que, como se vió en la sección anterior, nació como un elemento simple que permitía la ejecución de un sólo contexto de ejecución y ahora es un componente sofisticado que permite ejecutar en forma simultánea varios contextos.
+%%Tal como se mencionó al principio de este capítulo, una de las principales tareas de un Sistema Operativo es facilitar el uso del hardware a través de técnicas que permiten ocultar los detalles de su funcionamiento y enfocarse en su uso. Uno de estos componentes es el procesador, que, como se vió en la sección anterior, nació como un elemento simple que permitía la ejecución de un sólo contexto de ejecución y ahora es un componente sofisticado que permite ejecutar en forma simultánea varios contextos.
 
-Para facilitar su uso, el sistema operativo asume que un procesador puede ejecutar sólo un contexto de ejecución. Este procesador es una abstracción del procesador real que se denomina {abbr}`LP (Logical Processor)`. Un **LP** está asociado siempre a un **HT**. Como un **HT** puede ejecutar sólo un contexto, por transitividad, un **LP** puede ejecutar sólo un contexto  de ejecución o thread. Este thread que se implementa en un **LP** dentro del Sistema Operativo, se llama {abbr}`KT (Kernel Thread)`. 
+%Para facilitar su uso, el sistema operativo asume que un procesador puede ejecutar sólo un contexto de ejecución. 
+Finalemente, desde el punto de vista de un Sistema Operativo, un procesador puede ejecutar sólo un contexto de ejecución. Este procesador, que se denomina {abbr}`LP (Logical Processor)`, es una abstracción del procesador real. Un **LP** está asociado siempre a un **HT**. Como un **HT** puede ejecutar sólo un contexto, por transitividad, un **LP** puede ejecutar sólo un contexto  de ejecución o thread. Este thread que se implementa en un **LP** dentro del Sistema Operativo, se llama {abbr}`KT (Kernel Thread)`. 
 
 Como ejemplo, considere el sistema de la {numref}`Figura %s <01-kernel-thread>`, que tiene dos PU (por ejemplo, dos cores) que tienen SMT habilitado y pueden ejecutar hasta dos HT. Entonces, el hardware tiene una oferta de procesamiento de cuatro HT. Desde el punto de vista de un sistema operativo, estos HT los representa como cuatro LP. Desde el punto de vista de ejecución, el sistema operativo tiene la capacidad de ejecutar cuatro KT en forma simultánea.
 
