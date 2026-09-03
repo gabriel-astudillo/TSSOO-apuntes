@@ -2,6 +2,22 @@
 
 ## Sistema computacional genérico
 
+:::{tip} Personas: Alan Turing (1912 - 1954)
+:class: dropdown
+
+```{figure} images/02-turing.png
+:label:02-turing
+:width: 30%
+:align: center
+
+```
+
+Nació en Londres, en 1912. Su trabajo doctoral culminó con la demostración formal que era posible la existencia de una máquina universal capaz de realizar cualquier cálculo si se le daban las instrucciones adecuadas. Acuño la palabra *Algorirmo* como una secuencia de órdenes para alcanzar un objetivo. La idea base de su máquina teórica fue que la misma máquina física puede realizar cualquier tarea sólo cambiando las instrucciones. Como consecuencia, fundamentó que un sistema que compute datos consta de una máquina lógica y de instrucciones, lo que llamamos actualmente Hardware y Software.
+
+En 1952 fue procesado bajo las leyes británicas de la época debido a su homosexualidad y sometido a una castración química como alternativa a la prisión. Murió en 1954 a los 41 años por envenenamiento con cianuro. Décadas más tarde, el gobierno británico emitió una disculpa oficial y en 2013 la reina Isabel II le otorgó un indulto póstumo, consagrando su estatus como una de las figuras más determinantes de la historia moderna.
+
+:::
+
 Un sistema de cómputo, en general se compone de tres partes: a) Aplicaciones y programas, b) Sistema Operativo y c) Hardware (ver {numref}`Figura %s <arq-sist-comp>`). Si bien el bloque del Sistema Operativo es común y es el objetivo de estudio de esta asignatura, no es un componente necesario para que un sistema computacional sea utilizable. Un ejemplo es una solución basada en un microcontrolador como Arduino o un ESP32.
 
 ```{figure} images/01-arq-sist-comp.png
@@ -27,6 +43,20 @@ Bloques fundamentales de un sistema computacional desde el punto de vista de Arq
 ---
 (von-neumann)=
 ## Arquitectura de Von Neumann
+
+:::{tip} Personas: John Von Neumann (1903 - 1957)
+:class: dropdown
+
+```{figure} images/01-Neumann.png
+:label:01-Neumann
+:width: 20%
+:align: center
+```
+
+En el año 1925 terminó su doctorado en Matemáticas en Budapest a los 22 años. En 1930 emigró a Estados Unidos para incorporarse a la Universidad de Princeton. En 1936 conoció a Alan Turing en dicha Universidad y se interesó en su trabajo sobre una máquina de cómputo universal. En base a esto, en 1945 formalizó en el informe sobre el EDVAC el modelo de diseño informático estándar que sigue vigente en la actualidad, basado en almacenar programas e instrucciones en la misma memoria física que los datos, junto con una CPU compuesta por unidad de control, unidad aritmético-lógica (ALU) y registros.
+
+:::
+
 
 ### Descripción general
 
@@ -412,19 +442,3 @@ Arquitectura de un procesador multi-procesador, multi-core y multi-threading.
 ```
 
 
-%## Sistema Operativo
-
-%%Tal como se mencionó al principio de este capítulo, una de las principales tareas de un Sistema Operativo es facilitar el uso del hardware a través de técnicas que permiten ocultar los detalles de su funcionamiento y enfocarse en su uso. Uno de estos componentes es el procesador, que, como se vió en la sección anterior, nació como un elemento simple que permitía la ejecución de un sólo contexto de ejecución y ahora es un componente sofisticado que permite ejecutar en forma simultánea varios contextos.
-
-%Para facilitar su uso, el sistema operativo asume que un procesador puede ejecutar sólo un contexto de ejecución. 
-Finalemente, desde el punto de vista de un Sistema Operativo, un procesador puede ejecutar sólo un contexto de ejecución. Este procesador, que se denomina {abbr}`LP (Logical Processor)`, es una abstracción del procesador real. Un **LP** está asociado siempre a un **HT**. Como un **HT** puede ejecutar sólo un contexto, por transitividad, un **LP** puede ejecutar sólo un contexto  de ejecución o thread. Este thread que se implementa en un **LP** dentro del Sistema Operativo, se llama {abbr}`KT (Kernel Thread)`. 
-
-Como ejemplo, considere el sistema de la {numref}`Figura %s <01-kernel-thread>`, que tiene dos PU (por ejemplo, dos cores) que tienen SMT habilitado y pueden ejecutar hasta dos HT. Entonces, el hardware tiene una oferta de procesamiento de cuatro HT. Desde el punto de vista de un sistema operativo, estos HT los representa como cuatro LP. Desde el punto de vista de ejecución, el sistema operativo tiene la capacidad de ejecutar cuatro KT en forma simultánea.
-
-```{figure} images/01-kernel-thread.png
-:label: 01-kernel-thread
-:width: 90%
-:align: center
-
-Arquitectura de un procesador multi-procesador, multi-core y multi-threading.
-```

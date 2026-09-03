@@ -34,6 +34,67 @@ Actualmente, las arquitecturas de cómputo se caracterizan por ser heterogéneas
 
 ## Abstracciones del HW
 
+Tal como se mencionó al principio de esta unidad, una de las principales tareas de un Sistema Operativo es facilitar el uso del hardware a través de técnicas que permiten ocultar los detalles de su funcionamiento y enfocarse en su uso. Uno de estos componentes es el procesador, que, como se vió en la sección [](#von-neumann), nació como un elemento simple que permitía la ejecución de un sólo contexto de ejecución y ahora es un componente sofisticado que permite ejecutar en forma simultánea varios contextos.
+
+### Proceso
+
+Un proceso es un programa en ejecución junto con todos los recursos que necesita para operar (espacio de memoria, registros de la CPU, identificadores y archivos abiertos). A diferencia de un programa —que es una estructura pasiva almacenada en un sistema de almacenamiento persistente como código ejecutable—, el proceso es una entidad activa que consume ciclos de procesador y memoria RAM gestionada por el sistema operativo.
+
+Los componentes del procesos son almacenados en una estructura denominada {abbr}`PCB (Process Control BLock)` (ver {numref}`Figura %s <PCB-01>`) contiene los siguientes elementos (entre otros):
+
+* Espacio de direcciones en memoria que contienen el Texto o Código (instrucciones en lenguaje máquina) que ejecutadas en la {abbr}`PU (Process Unit)`.
+
+* Espacio de direcciones en memoria para almacenar variables globales, variables locales (stack)
+
+* Espacio de direcciones en memoria para almacenar datos que el código solicita en forma dinámica (heap)
+
+* Identificador de proceso (PID), que es un número entero sin signo que identifica al proceso
+
+* Registros que está utilizando en la {abbr}`PU (Process Unit)`. El principal es el {abbr}`PC (Programm Counter)`
+
+* Estado actual (Ready, Running, Blocked, Waiting)
+
+* Archivos utilizados
+
+* Información de gestión de recursos: Punteros de memoria asignada, descriptores de archivos abiertos y dispositivos de E/S en uso.
+
+
+```{figure} images/02-PCB-01.png
+:label: PCB-01
+:width: 50%
+:align: center
+
+Representación del PCB de un proceso
+```
+
+### Unidad de procesamiento
+
+Para facilitar su uso, el sistema operativo asume que un procesador puede ejecutar sólo un contexto de ejecución. 
+Finalemente, desde el punto de vista de un Sistema Operativo, un procesador puede ejecutar sólo un contexto de ejecución. Este procesador, que se denomina {abbr}`LP (Logical Processor)`, es una abstracción del procesador real. Un **LP** está asociado siempre a un **HT**. Como un **HT** puede ejecutar sólo un contexto, por transitividad, un **LP** puede ejecutar sólo un contexto  de ejecución o thread. Este thread que se implementa en un **LP** dentro del Sistema Operativo, se llama {abbr}`KT (Kernel Thread)`. 
+
+Algunas de las {abbr}`PU (Process Unit)` actuales, son máquinas de Neumann modificadas que pueden ejecutar dos o más Hardware Threads: MultiThreading. Debido a que desde el punto de vista del Sistema Operativo, siempre un {abbr}`LP (Logic Processor)` está asociado a un {abbr}`HT (Hardware Thread)`, entonces el Sistema Operativo presenta 2 {abbr}`LP (Logic Processor)`. Se debe tener en cuenta que el desempeño del {abbr}`HT (Hardware Thread)` que está relacionado con el {abbr}`MT (Multi Threading)` tiene un desempeño menor que el {abbr}`MT (Multi Threading)` original.
+
+```{figure} images/02-MT-LP.png
+:label: 02-MT-LP
+:width: 50%
+:align: center
+
+Relación Procesador Lógico / Kernerl Thread / Hardware Thread.
+```
+
+
+
+Como ejemplo, considere el sistema de la {numref}`Figura %s <02-kernel-thread>`, que tiene dos PU (por ejemplo, dos cores) que tienen SMT habilitado y pueden ejecutar hasta dos HT. Entonces, el hardware tiene una oferta de procesamiento de cuatro HT. Desde el punto de vista de un sistema operativo, estos HT los representa como cuatro LP. Desde el punto de vista de ejecución, el sistema operativo tiene la capacidad de ejecutar cuatro KT en forma simultánea.
+
+```{figure} images/02-kernel-thread.png
+:label: 02-kernel-thread
+:width: 80%
+:align: center
+
+Arquitectura de un procesador multi-procesador, multi-core y multi-threading.
+```
+
+
 ## Sistema Multiprogramados
 
 ## Sistemas de Tiempo Compartido
