@@ -82,8 +82,6 @@ Algunas de las {abbr}`PU (Process Unit)` actuales, son máquinas de Neumann modi
 Relación Procesador Lógico / Kernerl Thread / Hardware Thread.
 ```
 
-
-
 Como ejemplo, considere el sistema de la {numref}`Figura %s <02-kernel-thread>`, que tiene dos PU (por ejemplo, dos cores) que tienen SMT habilitado y pueden ejecutar hasta dos HT. Entonces, el hardware tiene una oferta de procesamiento de cuatro HT. Desde el punto de vista de un sistema operativo, estos HT los representa como cuatro LP. Desde el punto de vista de ejecución, el sistema operativo tiene la capacidad de ejecutar cuatro KT en forma simultánea.
 
 ```{figure} images/02-kernel-thread.png
@@ -94,12 +92,83 @@ Como ejemplo, considere el sistema de la {numref}`Figura %s <02-kernel-thread>`,
 Arquitectura de un procesador multi-procesador, multi-core y multi-threading.
 ```
 
-
 ## Sistema Multiprogramados
+
+Los sistemas multiprogramados son aquellos sistemas operativos diseñados para mantener varios procesos simultáneamente en la memoria principal ({abbr}`RAM (Random Access Memory)`), alternando la ejecución de la {abbr}`PU (Process Unit)` entre ellos para maximizar su uso.
+
+Surgieron históricamente para superar la ineficiencia del procesamiento por lotes (batch) monoprogramado, donde la {abbr}`PU (Process Unit)` permanecía inactiva (idle) durante ciertos periodos cada vez que un programa realizaba una operación de I/O.
+
+### Mecanismo de funcionamiento
+
+* Varios programas ejecutables residen al mismo tiempo en distintas particiones o regiones de la memoria RAM.
+* La {abbr}`PU (Process Unit)` comienza ejecutando las instrucciones de un proceso.
+* Cuando ese proceso solicita una operación de E/S lenta (como leer del disco o esperar datos de red), el sistema operativo suspende su ejecución.
+* En lugar de dejar la {abbr}`PU (Process Unit)` sin uso, el scheduler realiza un cambio de contexto y asigna el procesador a otro proceso que esté listo para ejecutarse.
+* Al completarse la E/S del proceso original, este vuelve al estado de listo para competir nuevamente por la CPU.
+
+### Requisitos y características clave
+
+* Gestión de memoria: Requiere técnicas de particionamiento, reubicación y protección de memoria para evitar que un proceso altere o lea indebidamente el espacio de otro o del kernel.
+* Planificación de la {abbr}`PU (Process Unit)` (PU Scheduling): el kernel necesita algoritmos para determinar qué proceso puede utilizar la unidad de procesamiento.
+* Manejo de interrupciones: el hardware debe contar con mecanismos de interrupción para notificar al sistema operativo cuando un dispositivo de E/S ha terminado su transferencia.
 
 ## Sistemas de Tiempo Compartido
 
-## Operación de un Sistema Operativo
+:::{tip} Personas: Dennis Ritchie
+:class: dropdown
+
+```{figure} images/02-ritchie.png
+:label:02-ritchie
+:width: 20%
+:align: center
+```
+
+Fue coautor del kernel original de Unix y el creador del lenguaje C (1972). Al reescribir el kernel de Unix en C en 1973 junto a Ken Thompson, convirtió a Unix en el primer sistema operativo moderno de tiempo compartido verdaderamente portable, desacoplándolo de una arquitectura de hardware específica.
+
+Los sistemas de tiempo compartido (time-sharing systems) son sistemas operativos multiprogramados y multitarea diseñados para permitir que múltiples usuarios o procesos compartan los recursos de un procesador simultáneamente, proporcionando a cada uno la ilusión de tener una máquina dedicada.
+
+A diferencia de la multiprogramación clásica —cuyo objetivo principal era maximizar la utilización de la CPU conmutando tareas solo cuando ocurría una operación de Entrada/Salida—, el tiempo compartido busca minimizar el tiempo de respuesta y permitir la interactividad directa en tiempo real.
+:::
 
 
 
+### Principio de funcionamiento
+
+* Ventana de tiempo (Quantum o Time Slice): La {abbr}`PU (Process Unit)` se asigna a un proceso listo durante una fracción fija y muy breve de tiempo (típicamente entre 10 y 100 milisegundos).
+
+* Interrupción por reloj: Un temporizador por hardware genera una interrupción periódica. Si el proceso no termina o no se bloquea antes de que expire su cuanto, el hardware transfiere el control al sistema operativo.
+
+* Cambio de contexto (Context Switch): El kernel guarda el estado de los registros y el contador de programa (PC) del proceso actual en su PCB, selecciona el siguiente proceso listo mediante un algoritmo como Round Robin, y restaura su contexto.
+
+* Ilusión de simultaneidad: Dado que la alternancia ocurre decenas o cientos de veces por segundo, el retraso es imperceptible para un operador humano interactuando a través de una terminal o interfaz de usuario.
+
+### Requisitos de hardware y arquitectura
+
+* Reloj programable e interrupciones periódicas: Para forzar la expulsión del proceso en ejecución (planificación apropiativa o preemptive).
+
+* Protección de memoria: Registros base/límite o unidades de gestión de memoria (MMU) con paginación para aislar los espacios de direcciones entre usuarios.
+
+* Modos de ejecución (Dual Mode): Distinción por hardware entre modo usuario (user mode) y modo privilegiado (kernel mode) para evitar instrucciones privilegiadas no autorizadas.
+
+* Memoria virtual: Permite mantener activos más programas que la capacidad física de la memoria RAM mediante mecanismos de intercambio (swapping) o paginación bajo demanda.
+
+## Operación dual de un Sistema Operativo
+
+El modo dual es un mecanismo implementado en el procesador por hardware que permite evitar que distintos procesos interfieran entre sí y que los procesos no acceden diractamente a los recursos de hardware del sistema computacional. Separa la ejecución en al menos dos niveles de privilegio: modo usuario y modo kernel.
+
+### Modo Usuario (User Mode):
+
+Es el estado en el que corren los procesos y aplicaciones del usuario (navegadores, editores de texto, compiladores, etc.). El repertorio de instrucciones está restringido: el código no tiene acceso directo a la memoria física ni a los periféricos de Entrada/Salida (E/S). Si una instrucción necesita utilizar el hardware, ésta debe generar una interrupción o syscall para transferir el control al Sistema Operativo.
+
+### Modo Núcleo (Kernel Mode):
+
+Es el estado en el que corre el núcleo (kernel) del sistema operativo. La {abbr}`PU (Process Unit)` tiene acceso total y sin restricciones a todo el espacio de direcciones, periféricos y registros de control de la arquitectura. Solo en este modo pueden ejecutarse instrucciones privilegiadas (como manipular la tabla de páginas de la MMU, deshabilitar interrupciones, programar el temporizador del sistema o enviar comandos directos a los buses de hardware).
+
+
+```{figure} images/02-user-kernel-mode.png
+:label: 02-user-kernel-mode
+:width: 60%
+:align: center
+
+Acceso al hardware de I/O desde el punto de vista de un Sistema Operativo. Cuando el proceso llega a una instrucción que solicita I/O, ésta genera un Syscall que permite que una función específica del kernel acceda al hardware apropiado. Todas las acciones de acceso al I/O se ejecutan en modo kernel.
+```
